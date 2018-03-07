@@ -2,16 +2,6 @@
 console.log('check');
 var TITLE = ``;
 
-export function editView(){
-	let body = document.getElementById('hide2');
-
-	let htmlString = `<label>Enter New name of Collection :</label>
-          <input type="text" id="updatedCollectionName">
-          <button id="updatedCollectionbtn" type="button" class="btn btn-default" >Submit</button>`;
-
-    body.innerHTML = htmlString;
-}
-
 function deleteMovie(index,moviename,identifier,collectionList){
 	let d,dd;
 	console.log('sdsad');
@@ -46,15 +36,18 @@ export function editCollection2(collectionList){
 			break;
 		}
 	}
+	document.getElementById('updatedCollectionName').value = "";
 	console.log(collectionList);
-	let element = document.getElementById('hide2')
-	element.innerHTML = "Collection's Name changed";
+	//let element = document.getElementById('hide2')
+	//element.innerHTML = "Collection's Name changed";
+	alert("Collection's Name changed");
 	return collectionList;
 }
 
 function editCollection(title,identifier,collectionList){
 	console.log(title);
 	TITLE = title;
+	return collectionList;
 }
 
 function deleteCollection(index,identifier,collectionList){
@@ -70,15 +63,16 @@ function deleteCollection(index,identifier,collectionList){
 	console.log(collectionList);
 	let element = document.getElementById(identifier);
 	element.style.display = "none";
+	return collectionList;
 }
 
 
 function listMoviesInCollection(n,collectionList){
 	console.log('dekho');
 	let element = document.getElementById('iid');
-	let d;
+	let d,i;
 
-	for(let i=0;i<collectionList.length;i++){
+	for(i=0;i<collectionList.length;i++){
 		if(collectionList[i].id==n){
 			d = i;
 			break ;
@@ -94,7 +88,7 @@ function listMoviesInCollection(n,collectionList){
 
 	else{
 		htmlString += `<ol>`;
-		for(let i=0;i<collectionList[d].movies.length;i++){
+		for(i=0;i<collectionList[d].movies.length;i++){
 			let str = collectionList[d].movies[i];
 			console.log(str);
 			htmlString += `<li id='i${i}'><strong>${collectionList[d].movies[i]}<strong>`;
@@ -106,12 +100,12 @@ function listMoviesInCollection(n,collectionList){
 		console.log(htmlString);
 		element.innerHTML = htmlString;
 
-		for(let i=0;i<collectionList.length;i++){
+		for(i=0;i<collectionList[d].movies.length;i++){
 			let t = `z${i}`;
-			let t1 = `i${i}`;
+			let tee = `i${i}`;
 			let moviedelete = document.getElementById(t);
 			moviedelete.onclick = function(){
- 	       		collectionList = deleteMovie(collectionList[i].id,collectionList[d].movies[i],t1,collectionList);
+ 	       		collectionList = deleteMovie(collectionList[d].id,collectionList[d].movies[i],tee,collectionList);
 			}	
 		}
 	}
@@ -135,10 +129,10 @@ export function collectionPage(collectionList){
 		for(let i=0;i<collectionList.length;i++){
 			htmlString += `<li id="iid${i}"><button type="button" id="xid${i}" class="btn btn-info" data-toggle="collapse" data-target="#iid" ">${collectionList[i].title}</button>`
 		//htmlString += `<input type="submit" value="Delete">`;
-			htmlString += `<button type="button"  id="yid${i}" class="btn btn-default pull-right" data-toggle="collapse" data-target="#iid" onclick="deleteCollection(${collectionList[i].id},'yid${i}')">
+			htmlString += `<button type="button"  id="yid${i}" class="btn btn-default pull-right"  >
           		<span class="glyphicon glyphicon-trash"></span> 
         		</button>`;
-        	htmlString += `<button type="button"  id="zid${i}" class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal4" data-dismiss="modal" onclick="editCollection('${collectionList[i].title}','zid${i}')">
+        	htmlString += `<button type="button"  id="zid${i}" class="btn btn-default pull-right" data-toggle="modal" data-target="#myModal4" data-dismiss="modal">
           		<span class="glyphicon glyphicon-edit"></span> 
          		</button></li><hr>`;
 		}
@@ -147,9 +141,14 @@ export function collectionPage(collectionList){
 		htmlString += `<div id="iid" class="collapse"></div>`
 		element.innerHTML = htmlString;
 
+		let listIDs = [] ;
+		for(let i=0;i<collectionList.length;i++){
+			listIDs.push(collectionList[i].id);
+		}
+
 		for(let i=0;i<collectionList.length;i++){
 			let t = `xid${i}`;
-			let t1 = `iid${i}`;
+			let tee = `iid${i}`;
 			let collectiondetail = document.getElementById(t);
 			collectiondetail.onclick = function(){
  	       		collectionList = listMoviesInCollection(collectionList[i].id,collectionList);
@@ -158,28 +157,18 @@ export function collectionPage(collectionList){
 			let tt = `yid${i}`;
 			let collectionedit = document.getElementById(tt);
 			collectionedit.onclick = function(){
- 	       		collectionList = deleteCollection(collectionList[i].id,t1,collectionList);
+ 	       		collectionList = deleteCollection(listIDs[i],tee,collectionList);
 			}	
 
 			let ttt = `zid${i}`;
 			let collectiondelete = document.getElementById(ttt);
 			collectiondelete.onclick = function(){
- 	       		collectionList = editCollection(collectionList[i].title,t1,collectionList);
+ 	       		collectionList = editCollection(collectionList[i].title,tee,collectionList);
 			}	
 
 		}
 	}
 	return collectionList;
-}
-
-export function modal2view(){
-	let modal = document.getElementById('hideModal');
-
-	let htmlString = `<label>Enter Name of Your collection:</label>
-    				  <input type="text" id="newCollectionName">
-    				  <button id="newCollectionbtn" type="button" class="btn btn-default">Submit</button>`
-
-    modal.innerHTML = htmlString;
 }
 
 function addMovieToCollection(id,movieName,collectionList,collectionName){
@@ -203,11 +192,12 @@ function addMovieToCollection(id,movieName,collectionList,collectionName){
 export function addNewCollection(count , collectionList){
 
 	console.log('ghusa');
+	alert('Added');
 
 	let collectionName = document.getElementById('newCollectionName').value;
 	//var collectionbtn = document.getElementById('newCollectionbtn');
-	let modal = document.getElementById('hideModal');
-	modal.innerHTML = `<p>Created</p>`;
+	//let modal = document.getElementById('hideModal');
+	//modal.innerHTML = `<p>Created</p>`;
 
 	count++;
 	let dict ={} ;
@@ -218,6 +208,7 @@ export function addNewCollection(count , collectionList){
 
 	collectionList.push(dict);
 	console.log(collectionList);
+	document.getElementById('newCollectionName').value = "";
 	//setTimeOut(alert('New Collection Added'),100);
 	//alert('New Collection Added');
 	return [count , collectionList];

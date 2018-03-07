@@ -1,7 +1,7 @@
 import $ from 'jquery'
 import {filteredSearch} from './dropDownSearch'
 import {movieDetailFun} from './movieDetailDisplay'
-import {addNewCollection, modal2view, collectionPage, editCollection2, editView} from './collection'
+import {addNewCollection, collectionPage, editCollection2} from './collection'
 //import renderHTML from 'tmdb.js';
 
 let moviesId = {} ;
@@ -24,18 +24,10 @@ $("#newCollectionbtn").click(function(){
     collectionList = essentials[1];
 });
 
-$("#modal2").click(function(){
-    modal2view();
-});
-
 $("#btnToRight").click(function(){
     collectionList = collectionPage(collectionList);
 });
 
 $("#updatedCollectionbtn").click(function(){
     collectionList = editCollection2(collectionList);
-});
-
-$("#change").click(function(){
-    editView();
 });
